@@ -14,8 +14,8 @@ class NewTwitt extends Component {
   handleOnSubmit(event) {
     event.preventDefault();
     console.log("on");
-    this.props.NewTwitt(this.state);
-    event.target.value.reset();
+    this.props.onNewTwitt(this.state);
+    event.target.reset();
     this.setState({ task: "" });
   }
 
@@ -23,15 +23,18 @@ class NewTwitt extends Component {
     console.log("on change");
     let newText = event.target.value;
     const now = Date.now();
-    const createAt = new Date(now);
+    const createdAt = Date(now);
     const id = Date.now() - new Date("1981-05-20");
-    this.setState({ text: newText, createAt, id });
+    this.setState({ text: newText, createdAt, id });
   }
 
   handleKeyUp(event) {
-    console.log("keyup");
-    if (event.key === "Escape") this.props.onEditTask(this.state);
-    event.target.value.reset();
+    if (event.key === "Escape") {
+      console.log("ESC", event.key);
+      const emptyText = "";
+      event.target = emptyText;
+      this.setState({ task: emptyText });
+    } else console.log(event.key);
   }
 
   render() {
@@ -51,16 +54,10 @@ class NewTwitt extends Component {
             <textarea
               autoFocus
               maxLength="140"
-              className="form-control col-11 mx-auto my-2 my-text-area"
+              className="form-control col-11 mx-auto my-2 user-text-area"
               placeholder="What's in your mind..."
               id="TwittTextArea"
               autoCapitalize="sentencess"
-              style={{
-                resize: "none",
-                backgroundColor: "#15202b",
-                color: "#cccccc",
-                border: "none",
-              }}
               onChange={(event) => this.handleOnchange(event)}
               onKeyUp={(event) => this.handleKeyUp(event)}
             ></textarea>

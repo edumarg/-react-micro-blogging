@@ -1,16 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 import PostedTwitt from "./postedTwitt";
 
-class TwittsList extends Component {
-  state = {};
-  render() {
-    return (
-      <React.Fragment>
-        <h3>Twitt list</h3>
-        <PostedTwitt></PostedTwitt>
-      </React.Fragment>
-    );
-  }
-}
+const TwittsList = (props) => {
+  const sortedData = props.list.sort((a, b) => a.createdAt - b.createdAt);
+  return (
+    <React.Fragment>
+      {sortedData.map((twitt) => (
+        <PostedTwitt key={twitt.id} twitt={twitt} />
+      ))}
+    </React.Fragment>
+  );
+};
 
 export default TwittsList;

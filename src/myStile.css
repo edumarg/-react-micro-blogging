@@ -3,8 +3,23 @@ body {
     color: #cccccc;
 }
 
+.user-text-area {
+    resize: none;
+    background-color: #15202b;
+    color: #cccccc;
+    border: none;
+}
+
 .form-control:focus {
-    border-color: #cccccc;
+    background-color: #15202b;
+    color: #cccccc;
+    border: none;
     -webkit-box-shadow: none;
     box-shadow: none;
+}
+
+.my-card {
+    background-color: #595959;
+    color: #cccccc;
+    border: #595959, solid, 2px;
 }
