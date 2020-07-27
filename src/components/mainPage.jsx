@@ -16,7 +16,7 @@ class MainPage extends Component {
     let cachedPostedTwitts = localStorage.getItem("mockedTwittsInLocalStorage");
     cachedPostedTwitts = JSON.parse(cachedPostedTwitts);
     console.log(cachedPostedTwitts);
-    this.setState({ postedTwitts: cachedPostedTwitts });
+    this.setState({ postedTwitts: cachedPostedTwitts || [] });
   }
 
   handleNewTwitt(twitt) {
