@@ -2,3 +2,9 @@ body {
     background-color: #15202b;
     color: #cccccc;
 }
+
+.form-control:focus {
+    border-color: #cccccc;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}

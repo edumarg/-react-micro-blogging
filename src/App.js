@@ -1,7 +1,8 @@
 import React from "react";
 import "./App.css";
-import "./myStile.css";
 import MainPage from "./components/mainPage";
+import "bootstrap/dist/css/bootstrap.css";
+import "./myStile.css";
 
 function App() {
   return (
