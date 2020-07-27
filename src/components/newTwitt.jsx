@@ -13,14 +13,12 @@ class NewTwitt extends Component {
 
   handleOnSubmit(event) {
     event.preventDefault();
-    console.log("on");
     this.props.onNewTwitt(this.state);
     event.target.reset();
     this.setState({ task: "" });
   }
 
   handleOnchange(event) {
-    console.log("on change");
     let newText = event.target.value;
     const now = Date.now();
     const createdAt = Date(now);
@@ -31,13 +29,22 @@ class NewTwitt extends Component {
   handleKeyUp(event) {
     if (event.key === "Escape") {
       console.log("ESC", event.key);
-      const emptyText = "";
-      event.target = emptyText;
-      this.setState({ task: emptyText });
-    } else console.log(event.key);
+      event.input.value = "";
+      this.setState({ task: "" });
+    }
+  }
+
+  validate() {
+    const text = this.state.text;
+    return text.length > 140
+      ? `You have use ${text.length} chacarters.
+      You can't use more than 140 characters...`
+      : // ? "You have  a maximum of 140 characters...."
+        null;
   }
 
   render() {
+    console.log(this.validate());
     return (
       <React.Fragment>
         <form
@@ -53,7 +60,7 @@ class NewTwitt extends Component {
             </label>
             <textarea
               autoFocus
-              maxLength="140"
+              //   maxLength="140"
               className="form-control col-11 mx-auto my-2 user-text-area"
               placeholder="What's in your mind..."
               id="TwittTextArea"
@@ -61,9 +68,16 @@ class NewTwitt extends Component {
               onChange={(event) => this.handleOnchange(event)}
               onKeyUp={(event) => this.handleKeyUp(event)}
             ></textarea>
+            {this.validate() && (
+              <div className="alert alert-danger">{this.validate()}</div>
+            )}
           </div>
           <div className="d-flex justify-content-end">
-            <button type="submit" className="btn btn-primary mb-2 ">
+            <button
+              type="submit"
+              className="btn btn-primary mb-2"
+              disabled={this.validate()}
+            >
               Post
             </button>
           </div>

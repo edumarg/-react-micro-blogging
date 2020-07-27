@@ -19,7 +19,11 @@ body {
 }
 
 .my-card {
-    background-color: #595959;
-    color: #cccccc;
-    border: #595959, solid, 2px;
+    background-color: #343a40;
+    color: #ffffff;
+    border: #343a40, solid, 2px;
+}
+
+.my-card h5 {
+    color: #6c757d;
 }

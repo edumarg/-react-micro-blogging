@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import NewTwitt from "./newTwitt";
 import TwittsList from "./twittsList";
 
-const mockedTwitts = [];
+let mockedTwitts = [];
 
 class MainPage extends Component {
   constructor(props) {
@@ -12,9 +12,21 @@ class MainPage extends Component {
     };
   }
 
+  componentDidMount() {
+    let cachedPostedTwitts = localStorage.getItem("mockedTwittsInLocalStorage");
+    cachedPostedTwitts = JSON.parse(cachedPostedTwitts);
+    console.log(cachedPostedTwitts);
+    this.setState({ postedTwitts: cachedPostedTwitts });
+  }
+
   handleNewTwitt(twitt) {
     let newpostedTwitts = [...this.state.postedTwitts];
     newpostedTwitts = [twitt, ...newpostedTwitts];
+    mockedTwitts = [...newpostedTwitts];
+    localStorage.setItem(
+      "mockedTwittsInLocalStorage",
+      JSON.stringify(newpostedTwitts)
+    );
     this.setState({ postedTwitts: newpostedTwitts });
   }
 
