@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Spinner from "react-bootstrap/Spinner";
 
 class NewTwitt extends Component {
   constructor(props) {
@@ -43,11 +44,10 @@ class NewTwitt extends Component {
   }
 
   render() {
-    console.log(this.validate());
     return (
       <React.Fragment>
         <form
-          className="col-10 m-auto"
+          className="col-10 mx-auto my-3"
           onSubmit={(event) => this.handleOnSubmit(event)}
           style={{
             border: "#cccccc solid 2px",
@@ -72,6 +72,9 @@ class NewTwitt extends Component {
             )}
           </div>
           <div className="d-flex justify-content-end">
+            {this.props.hideSpinner && (
+              <Spinner className="mr-3" animation="border" variant="primary" />
+            )}
             <button
               type="submit"
               className="btn btn-primary mb-2"

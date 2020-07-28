@@ -13,6 +13,7 @@ class MainPage extends Component {
     super(props);
     this.state = {
       postedTwitts: mockedTwitts,
+      hideSpinner: false,
     };
   }
 
@@ -23,16 +24,22 @@ class MainPage extends Component {
   }
 
   async handleNewTwitt(twitt) {
-    let newpostedTwitts = [...this.state.postedTwitts];
+    let NewHideSpinner = this.state.hideSpinner;
+    NewHideSpinner = true;
+    this.setState({ hideSpinner: NewHideSpinner });
     try {
-      const response = await axios.post(`${URL} +s`, twitt);
-      newpostedTwitts = [response.data, ...newpostedTwitts];
-      console.log("respose", response.data);
-      this.setState({ postedTwitts: newpostedTwitts });
+      let newPostedTwitts = [...this.state.postedTwitts];
+      const response = await axios.post(`${URL}`, twitt);
+
+      newPostedTwitts = [response.data, ...newPostedTwitts];
+      NewHideSpinner = false;
+      this.setState({ hideSpinner: NewHideSpinner });
     } catch (exeption) {
-      if (exeption.response && exeption.response.status === 404)
+      NewHideSpinner = false;
+      // this.setState({ hideSpinner: NewHideSpinner });
+      if (exeption.response && exeption.response.status === 404) {
         return toast.error("Information not found!!");
-      else toast.error("Unexpected error, please try again!");
+      } else toast.error("Unexpected error, please try again!");
     }
   }
 
@@ -51,7 +58,12 @@ class MainPage extends Component {
           draggable
           pauseOnHove
         />
-        <NewTwitt onNewTwitt={(twitt) => this.handleNewTwitt(twitt)}></NewTwitt>
+        <NewTwitt
+          className="mx-5"
+          onNewTwitt={(twitt) => this.handleNewTwitt(twitt)}
+          hideSpinner={this.state.hideSpinner}
+        ></NewTwitt>
+
         <TwittsList list={postedTwitts}></TwittsList>
       </React.Fragment>
     );
