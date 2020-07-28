@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import NewTwitt from "./newTwitt";
+import NewTwitt from "./newTwittForm";
 import TwittsList from "./twittsList";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import config from "../config.json";
 
 let mockedTwitts = [];
-
-const URL = "https://fullstack-web-course.ew.r.appspot.com/tweet";
 
 class MainPage extends Component {
   constructor(props) {
@@ -18,7 +17,7 @@ class MainPage extends Component {
   }
 
   async componentDidMount() {
-    const data = await axios.get(`${URL}`);
+    const data = await axios.get(`${config.URL}`);
     const postedTwittsFromServer = await data.data.tweets;
     this.setState({ postedTwitts: postedTwittsFromServer });
   }
@@ -29,14 +28,13 @@ class MainPage extends Component {
     this.setState({ hideSpinner: NewHideSpinner });
     try {
       let newPostedTwitts = [...this.state.postedTwitts];
-      const response = await axios.post(`${URL}`, twitt);
+      const response = await axios.post(`${config.URL}`, twitt);
 
       newPostedTwitts = [response.data, ...newPostedTwitts];
       NewHideSpinner = false;
       this.setState({ hideSpinner: NewHideSpinner });
     } catch (exeption) {
       NewHideSpinner = false;
-      // this.setState({ hideSpinner: NewHideSpinner });
       if (exeption.response && exeption.response.status === 404) {
         return toast.error("Information not found!!");
       } else toast.error("Unexpected error, please try again!");
