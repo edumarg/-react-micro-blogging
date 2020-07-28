@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import NewTwitt from "./newTwitt";
 import TwittsList from "./twittsList";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 let mockedTwitts = [];
+
+const URL = "https://fullstack-web-course.ew.r.appspot.com/tweet";
 
 class MainPage extends Component {
   constructor(props) {
@@ -14,26 +17,40 @@ class MainPage extends Component {
   }
 
   async componentDidMount() {
-    const data = await axios.get(
-      "https://fullstack-web-course.ew.r.appspot.com/tweet"
-    );
+    const data = await axios.get(`${URL}`);
     const postedTwittsFromServer = await data.data.tweets;
-    console.log("data", data.data.tweets);
     this.setState({ postedTwitts: postedTwittsFromServer });
   }
 
-  handleNewTwitt(twitt) {
+  async handleNewTwitt(twitt) {
     let newpostedTwitts = [...this.state.postedTwitts];
-    newpostedTwitts = [twitt, ...newpostedTwitts];
-    mockedTwitts = [...newpostedTwitts];
-    this.setState({ postedTwitts: newpostedTwitts });
+    try {
+      const response = await axios.post(`${URL} +s`, twitt);
+      newpostedTwitts = [response.data, ...newpostedTwitts];
+      console.log("respose", response.data);
+      this.setState({ postedTwitts: newpostedTwitts });
+    } catch (exeption) {
+      if (exeption.response && exeption.response.status === 404)
+        return toast.error("Information not found!!");
+      else toast.error("Unexpected error, please try again!");
+    }
   }
 
   render() {
     const { postedTwitts } = this.state;
     return (
       <React.Fragment>
-        <h1> Twitts </h1>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHove
+        />
         <NewTwitt onNewTwitt={(twitt) => this.handleNewTwitt(twitt)}></NewTwitt>
         <TwittsList list={postedTwitts}></TwittsList>
       </React.Fragment>
