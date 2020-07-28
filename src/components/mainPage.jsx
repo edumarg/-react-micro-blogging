@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NewTwitt from "./newTwitt";
 import TwittsList from "./twittsList";
+import axios from "axios";
 
 let mockedTwitts = [];
 
@@ -12,21 +13,19 @@ class MainPage extends Component {
     };
   }
 
-  componentDidMount() {
-    let cachedPostedTwitts = localStorage.getItem("mockedTwittsInLocalStorage");
-    cachedPostedTwitts = JSON.parse(cachedPostedTwitts);
-    console.log(cachedPostedTwitts);
-    this.setState({ postedTwitts: cachedPostedTwitts || [] });
+  async componentDidMount() {
+    const data = await axios.get(
+      "https://fullstack-web-course.ew.r.appspot.com/tweet"
+    );
+    const postedTwittsFromServer = await data.data.tweets;
+    console.log("data", data.data.tweets);
+    this.setState({ postedTwitts: postedTwittsFromServer });
   }
 
   handleNewTwitt(twitt) {
     let newpostedTwitts = [...this.state.postedTwitts];
     newpostedTwitts = [twitt, ...newpostedTwitts];
     mockedTwitts = [...newpostedTwitts];
-    localStorage.setItem(
-      "mockedTwittsInLocalStorage",
-      JSON.stringify(newpostedTwitts)
-    );
     this.setState({ postedTwitts: newpostedTwitts });
   }
 

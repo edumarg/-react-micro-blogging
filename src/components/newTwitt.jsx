@@ -20,7 +20,7 @@ class NewTwitt extends Component {
 
   handleOnchange(event) {
     let newContent = event.target.value;
-    const now = Date.now();
+    const now = new Date();
     const date = now.toISOString();
     const id = Date.now() - new Date("1981-05-20");
     this.setState({ content: newContent, date, id });
@@ -35,9 +35,9 @@ class NewTwitt extends Component {
   }
 
   validate() {
-    const text = this.state.text;
-    return text.length > 140
-      ? `You have use ${text.length} chacarters.
+    const content = this.state.content;
+    return content.length > 140
+      ? `You have use ${content.length} chacarters.
       You can't use more than 140 characters...`
       : null;
   }
