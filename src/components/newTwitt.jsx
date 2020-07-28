@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Spinner from "react-bootstrap/Spinner";
 
 class NewTwitt extends Component {
   constructor(props) {
@@ -6,8 +7,8 @@ class NewTwitt extends Component {
     this.state = {
       id: "",
       userName: "Edu.M",
-      createdAt: "",
-      text: "",
+      date: "",
+      content: "",
     };
   }
 
@@ -15,40 +16,38 @@ class NewTwitt extends Component {
     event.preventDefault();
     this.props.onNewTwitt(this.state);
     event.target.reset();
-    this.setState({ task: "" });
+    this.setState({ content: "" });
   }
 
   handleOnchange(event) {
-    let newText = event.target.value;
-    const now = Date.now();
-    const createdAt = Date(now);
+    let newContent = event.target.value;
+    const now = new Date();
+    const date = now.toISOString();
     const id = Date.now() - new Date("1981-05-20");
-    this.setState({ text: newText, createdAt, id });
+    this.setState({ content: newContent, date, id });
   }
 
   handleKeyUp(event) {
     if (event.key === "Escape") {
       console.log("ESC", event.key);
       event.input.value = "";
-      this.setState({ task: "" });
+      this.setState({ content: "" });
     }
   }
 
   validate() {
-    const text = this.state.text;
-    return text.length > 140
-      ? `You have use ${text.length} chacarters.
+    const content = this.state.content;
+    return content.length > 140
+      ? `You have use ${content.length} chacarters.
       You can't use more than 140 characters...`
-      : // ? "You have  a maximum of 140 characters...."
-        null;
+      : null;
   }
 
   render() {
-    console.log(this.validate());
     return (
       <React.Fragment>
         <form
-          className="col-10 m-auto"
+          className="col-10 mx-auto my-3"
           onSubmit={(event) => this.handleOnSubmit(event)}
           style={{
             border: "#cccccc solid 2px",
@@ -56,7 +55,7 @@ class NewTwitt extends Component {
         >
           <div className="form-group">
             <label className="sr-only" htmlFor="TwittTextArea">
-              New Twitt
+              New Post
             </label>
             <textarea
               autoFocus
@@ -73,6 +72,9 @@ class NewTwitt extends Component {
             )}
           </div>
           <div className="d-flex justify-content-end">
+            {this.props.hideSpinner && (
+              <Spinner className="mr-3" animation="border" variant="primary" />
+            )}
             <button
               type="submit"
               className="btn btn-primary mb-2"
