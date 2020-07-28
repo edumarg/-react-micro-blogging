@@ -6,8 +6,8 @@ class NewTwitt extends Component {
     this.state = {
       id: "",
       userName: "Edu.M",
-      createdAt: "",
-      text: "",
+      date: "",
+      content: "",
     };
   }
 
@@ -15,22 +15,22 @@ class NewTwitt extends Component {
     event.preventDefault();
     this.props.onNewTwitt(this.state);
     event.target.reset();
-    this.setState({ task: "" });
+    this.setState({ content: "" });
   }
 
   handleOnchange(event) {
-    let newText = event.target.value;
+    let newContent = event.target.value;
     const now = Date.now();
-    const createdAt = Date(now);
+    const date = now.toISOString();
     const id = Date.now() - new Date("1981-05-20");
-    this.setState({ text: newText, createdAt, id });
+    this.setState({ content: newContent, date, id });
   }
 
   handleKeyUp(event) {
     if (event.key === "Escape") {
       console.log("ESC", event.key);
       event.input.value = "";
-      this.setState({ task: "" });
+      this.setState({ content: "" });
     }
   }
 
@@ -39,8 +39,7 @@ class NewTwitt extends Component {
     return text.length > 140
       ? `You have use ${text.length} chacarters.
       You can't use more than 140 characters...`
-      : // ? "You have  a maximum of 140 characters...."
-        null;
+      : null;
   }
 
   render() {
@@ -56,7 +55,7 @@ class NewTwitt extends Component {
         >
           <div className="form-group">
             <label className="sr-only" htmlFor="TwittTextArea">
-              New Twitt
+              New Post
             </label>
             <textarea
               autoFocus

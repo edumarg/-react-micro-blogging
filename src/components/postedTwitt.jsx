@@ -10,9 +10,9 @@ const PstedTwitt = (props) => {
             <div className="card-body">
               <h5 className="card-title d-flex justify-content-between">
                 <span className="mr-3">{twitt.userName}</span>
-                <span>{twitt.createdAt}</span>
+                <span>{twitt.date}</span>
               </h5>
-              <p className="card-text">{twitt.text}</p>
+              <p className="card-text">{twitt.content}</p>
             </div>
           </div>
         </div>
