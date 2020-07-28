@@ -36,10 +36,11 @@ class NewTwitt extends Component {
 
   validate() {
     const content = this.state.content;
-    return content.length > 140
-      ? `You have use ${content.length} chacarters.
-      You can't use more than 140 characters...`
-      : null;
+    if (content.length > 140)
+      return `You have use ${content.length} chacarters.
+      You can't use more than 140 characters...`;
+    else if (content.trim() === "") return `Post cannot be empty..`;
+    else return null;
   }
 
   render() {
