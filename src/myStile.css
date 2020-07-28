@@ -3,6 +3,10 @@ body {
     color: #cccccc;
 }
 
+.user-form {
+    border: #cccccc solid 2px;
+}
+
 .user-text-area {
     resize: none;
     background-color: #15202b;

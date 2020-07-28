@@ -29,7 +29,6 @@ class NewTwitt extends Component {
 
   handleKeyUp(event) {
     if (event.key === "Escape") {
-      console.log("ESC", event.key);
       event.input.value = "";
       this.setState({ content: "" });
     }
@@ -47,11 +46,8 @@ class NewTwitt extends Component {
     return (
       <React.Fragment>
         <form
-          className="col-10 mx-auto my-3"
+          className="col-10 mx-auto my-3 user-form"
           onSubmit={(event) => this.handleOnSubmit(event)}
-          style={{
-            border: "#cccccc solid 2px",
-          }}
         >
           <div className="form-group">
             <label className="sr-only" htmlFor="TwittTextArea">
