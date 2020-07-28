@@ -47,7 +47,7 @@ class NewTwitt extends Component {
     return (
       <React.Fragment>
         <form
-          className="col-10 mx-auto my-3 user-form"
+          className="col-6 mx-auto my-3 user-form"
           onSubmit={(event) => this.handleOnSubmit(event)}
         >
           <div className="form-group">
