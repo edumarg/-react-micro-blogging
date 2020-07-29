@@ -40,7 +40,7 @@ class NewTwitt extends Component {
       return `You have use ${content.length} chacarters.
       You can't use more than 140 characters...`;
     else if (content.trim() === "") return `Post cannot be empty..`;
-    else return null;
+    else return null
   }
 
   render() {
@@ -48,6 +48,7 @@ class NewTwitt extends Component {
       <React.Fragment>
         <form
           className="col-6 mx-auto my-3 user-form"
+
           onSubmit={(event) => this.handleOnSubmit(event)}
         >
           <div className="form-group">
@@ -64,6 +65,7 @@ class NewTwitt extends Component {
               onChange={(event) => this.handleOnchange(event)}
               onKeyUp={(event) => this.handleKeyUp(event)}
             ></textarea>
+
           </div>
           <div className="d-flex justify-content-end align-content-center align-items-center">
             {this.validate() && (
