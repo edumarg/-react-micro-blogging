@@ -6,7 +6,7 @@ class NewTwitt extends Component {
     super(props);
     this.state = {
       id: "",
-      userName: "Edu.M",
+      userName: this.props.currentUser,
       date: "",
       content: "",
     };
@@ -29,24 +29,26 @@ class NewTwitt extends Component {
 
   handleKeyUp(event) {
     if (event.key === "Escape") {
-      event.input.value = "";
+      event.value = "";
       this.setState({ content: "" });
     }
   }
 
   validate() {
     const content = this.state.content;
-    return content.length > 140
-      ? `You have use ${content.length} chacarters.
-      You can't use more than 140 characters...`
-      : null;
+    if (content.length > 140)
+      return `You have use ${content.length} chacarters.
+      You can't use more than 140 characters...`;
+    else if (content.trim() === "") return `Post cannot be empty..`;
+    else return null
   }
 
   render() {
     return (
       <React.Fragment>
         <form
-          className="col-10 mx-auto my-3 user-form"
+          className="col-6 mx-auto my-3 user-form"
+
           onSubmit={(event) => this.handleOnSubmit(event)}
         >
           <div className="form-group">
@@ -63,11 +65,12 @@ class NewTwitt extends Component {
               onChange={(event) => this.handleOnchange(event)}
               onKeyUp={(event) => this.handleKeyUp(event)}
             ></textarea>
-            {this.validate() && (
-              <div className="alert alert-danger">{this.validate()}</div>
-            )}
+
           </div>
-          <div className="d-flex justify-content-end">
+          <div className="d-flex justify-content-end align-content-center align-items-center">
+            {this.validate() && (
+              <div className="alert alert-danger mr-3">{this.validate()}</div>
+            )}
             {this.props.hideSpinner && (
               <Spinner className="mr-3" animation="border" variant="primary" />
             )}

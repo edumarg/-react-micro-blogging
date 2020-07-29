@@ -5,14 +5,13 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import config from "../config.json";
 
-let mockedTwitts = [];
-
 class MainPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      postedTwitts: mockedTwitts,
+      postedTwitts: [],
       hideSpinner: false,
+      currentUser: this.props.currentUser,
     };
   }
 
@@ -32,13 +31,13 @@ class MainPage extends Component {
 
       newPostedTwitts = [response.data, ...newPostedTwitts];
       NewHideSpinner = false;
-      this.setState({ hideSpinner: NewHideSpinner });
     } catch (exeption) {
       NewHideSpinner = false;
       if (exeption.response && exeption.response.status === 404) {
         return toast.error("Information not found!!");
       } else toast.error("Unexpected error, please try again!");
     }
+    this.setState({ hideSpinner: NewHideSpinner });
   }
 
   render() {
@@ -60,6 +59,7 @@ class MainPage extends Component {
           className="mx-5"
           onNewTwitt={(twitt) => this.handleNewTwitt(twitt)}
           hideSpinner={this.state.hideSpinner}
+          currentUser={this.state.currentUser}
         ></NewTwitt>
 
         <TwittsList list={postedTwitts}></TwittsList>
