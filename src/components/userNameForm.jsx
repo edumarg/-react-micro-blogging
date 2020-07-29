@@ -49,7 +49,7 @@ class UserNameForm extends Component {
               />
             </div>
             <div className="d-flex align-content-center align-items-center">
-              <button type="submit" className="btn btn-primary mr-2">
+              <button type="submit" className="btn btn-primary mr-3">
                 Submit
               </button>
               {this.validate() && (
