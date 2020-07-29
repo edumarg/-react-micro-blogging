@@ -11,6 +11,7 @@ class MainPage extends Component {
     this.state = {
       postedTwitts: [],
       hideSpinner: false,
+      currentUser: this.props.currentUser,
     };
   }
 
@@ -30,13 +31,13 @@ class MainPage extends Component {
 
       newPostedTwitts = [response.data, ...newPostedTwitts];
       NewHideSpinner = false;
-      this.setState({ hideSpinner: NewHideSpinner });
     } catch (exeption) {
       NewHideSpinner = false;
       if (exeption.response && exeption.response.status === 404) {
         return toast.error("Information not found!!");
       } else toast.error("Unexpected error, please try again!");
     }
+    this.setState({ hideSpinner: NewHideSpinner });
   }
 
   render() {
@@ -58,6 +59,7 @@ class MainPage extends Component {
           className="mx-5"
           onNewTwitt={(twitt) => this.handleNewTwitt(twitt)}
           hideSpinner={this.state.hideSpinner}
+          currentUser={this.state.currentUser}
         ></NewTwitt>
 
         <TwittsList list={postedTwitts}></TwittsList>
