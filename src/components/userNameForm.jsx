@@ -4,29 +4,18 @@ class UserNameForm extends Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
-    this.state = { originalUser: "" };
-  }
-
-  componentDidMount() {
-    this.setState({ originalUser: this.context.currentUser });
+    this.state = {};
   }
 
   handleOnSubmit(event) {
     event.preventDefault();
+    this.context.currentUser = event.target.value;
     this.props.history.replace("/home");
   }
 
   handleOnchange(event) {
     let newUserName = event.target.value;
     this.context.onNewUserName(newUserName);
-  }
-
-  handleKeyUp(event) {
-    const originalUser = this.state.originalUser;
-    if (event.key === "Escape") {
-      this.context.currentUser = originalUser;
-      event.value = this.context.currentUser;
-    }
   }
 
   validate() {
@@ -48,7 +37,6 @@ class UserNameForm extends Component {
                 className="form-control user-form-input"
                 id="inputUserName"
                 onChange={(event) => this.handleOnchange(event)}
-                // onKeyUp={(event) => this.handleKeyUp(event)}
                 value={this.context.currentUser}
               />
             </div>

@@ -20,6 +20,15 @@ class MainPage extends Component {
     const data = await axios.get(`${config.URL}`);
     const postedTwittsFromServer = await data.data.tweets;
     this.setState({ postedTwitts: postedTwittsFromServer });
+    this.getTwitts = setInterval(async () => {
+      const data = await axios.get(`${config.URL}`);
+      const postedTwittsFromServer = await data.data.tweets;
+      this.setState({ postedTwitts: postedTwittsFromServer });
+    }, 30000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.getTwitts);
   }
 
   async handleNewTwitt(twitt) {
@@ -33,10 +42,13 @@ class MainPage extends Component {
       NewHideSpinner = false;
       this.setState({ postedTwitts: newPostedTwitts });
     } catch (exeption) {
-      NewHideSpinner = false;
       if (exeption.response && exeption.response.status === 404) {
-        return toast.error("Information not found!!");
-      } else toast.error("Unexpected error, please try again!");
+        NewHideSpinner = false;
+        toast.error("Information not found!!");
+      } else {
+        NewHideSpinner = false;
+        toast.error("Unexpected error, please try again!");
+      }
     }
     this.setState({ hideSpinner: NewHideSpinner });
   }
@@ -64,13 +76,7 @@ class MainPage extends Component {
             list: postedTwitts,
           }}
         >
-          <NewTwitt
-            className="mx-5"
-            // onNewTwitt={(twitt) => this.handleNewTwitt(twitt)}
-            // hideSpinner={this.state.hideSpinner}
-            // currentUser={this.state.currentUser}
-          ></NewTwitt>
-          {/* pasar postedTwitts por context */}
+          <NewTwitt className="mx-5"></NewTwitt>
           <TwittsList />
         </TwittContext.Provider>
       </React.Fragment>

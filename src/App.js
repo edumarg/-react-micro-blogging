@@ -15,7 +15,7 @@ class App extends Component {
     this.state = { currentUser: "" };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     let newCurrentUser = localStorage.getItem("CurrentUserName");
     this.setState({ currentUser: newCurrentUser || "Default" });
   }
@@ -42,7 +42,7 @@ class App extends Component {
                 render={(props) => (
                   <MainPage currentUser={this.state.currentUser} {...props} />
                 )}
-              ></Route>
+              ></Route>{" "}
               <Route
                 path="/user"
                 render={(props) => (
@@ -54,12 +54,16 @@ class App extends Component {
                     {...props}
                   />
                 )}
-              ></Route>
-              <Route path="/not-found" component={NotFound}></Route>
-              <Redirect from="/" exact to="/home"></Redirect>
-            </Switch>
-          </div>
-        </UserContext.Provider>
+              ></Route>{" "}
+              <Route path="/not-found" component={NotFound}>
+                {" "}
+              </Route>{" "}
+              <Redirect from="/" exact to="/home">
+                {" "}
+              </Redirect>{" "}
+            </Switch>{" "}
+          </div>{" "}
+        </UserContext.Provider>{" "}
       </React.Fragment>
     );
   }
