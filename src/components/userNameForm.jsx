@@ -4,7 +4,11 @@ class UserNameForm extends Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
-    this.state = { userName: this.props.currentUser };
+    this.state = { originalUser: "" };
+  }
+
+  componentDidMount() {
+    this.setState({ originalUser: this.context.currentUser });
   }
 
   handleOnSubmit(event) {
@@ -18,9 +22,10 @@ class UserNameForm extends Component {
   }
 
   handleKeyUp(event) {
+    const originalUser = this.state.originalUser;
     if (event.key === "Escape") {
-      event.value = this.props.currentUser;
-      this.setState({ userName: this.props.currentUser });
+      this.context.currentUser = originalUser;
+      event.value = this.context.currentUser;
     }
   }
 

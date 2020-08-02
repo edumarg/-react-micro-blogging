@@ -21,7 +21,6 @@ class App extends Component {
   }
 
   handleNewUserName(userName) {
-    console.log("handle new user", userName);
     this.setState({ currentUser: userName });
     localStorage.setItem("CurrentUserName", userName);
   }

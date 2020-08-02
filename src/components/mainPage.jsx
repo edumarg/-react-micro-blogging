@@ -4,6 +4,7 @@ import TwittsList from "./twittsList";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import config from "../config.json";
+import TwittContext from "../context/twittContext";
 
 class MainPage extends Component {
   constructor(props) {
@@ -22,7 +23,6 @@ class MainPage extends Component {
   }
 
   async handleNewTwitt(twitt) {
-    console.log("twitt", twitt);
     let NewHideSpinner = this.state.hideSpinner;
     NewHideSpinner = true;
     this.setState({ hideSpinner: NewHideSpinner });
@@ -56,14 +56,23 @@ class MainPage extends Component {
           draggable
           pauseOnHove
         />
-        <NewTwitt
-          className="mx-5"
-          onNewTwitt={(twitt) => this.handleNewTwitt(twitt)}
-          hideSpinner={this.state.hideSpinner}
-          currentUser={this.state.currentUser}
-        ></NewTwitt>
-
-        <TwittsList list={postedTwitts}></TwittsList>
+        <TwittContext.Provider
+          value={{
+            onNewTwitt: (twitt) => this.handleNewTwitt(twitt),
+            hideSpinner: this.state.hideSpinner,
+            currentUser: this.state.currentUser,
+            list: postedTwitts,
+          }}
+        >
+          <NewTwitt
+            className="mx-5"
+            // onNewTwitt={(twitt) => this.handleNewTwitt(twitt)}
+            // hideSpinner={this.state.hideSpinner}
+            // currentUser={this.state.currentUser}
+          ></NewTwitt>
+          {/* pasar postedTwitts por context */}
+          <TwittsList />
+        </TwittContext.Provider>
       </React.Fragment>
     );
   }
