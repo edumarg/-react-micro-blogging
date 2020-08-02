@@ -7,6 +7,7 @@ import NotFound from "./components/notFound";
 import "bootstrap/dist/css/bootstrap.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./myStile.css";
+import UserContext from "./context/userContext";
 
 class App extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class App extends Component {
     this.state = { currentUser: "" };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     let newCurrentUser = localStorage.getItem("CurrentUserName");
     this.setState({ currentUser: newCurrentUser || "Default" });
   }
@@ -27,29 +28,42 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <NavBarFrom />
-        <div>
-          <Switch>
-            <Route
-              path="/home"
-              render={(props) => (
-                <MainPage currentUser={this.state.currentUser} {...props} />
-              )}
-            ></Route>
-            <Route
-              path="/user"
-              render={(props) => (
-                <UserNameForm
-                  currentUser={this.state.currentUser}
-                  onNewUserName={(userName) => this.handleNewUserName(userName)}
-                  {...props}
-                />
-              )}
-            ></Route>
-            <Route path="/not-found" component={NotFound}></Route>
-            <Redirect from="/" exact to="/home"></Redirect>
-          </Switch>
-        </div>
+        <UserContext.Provider
+          value={{
+            currentUser: this.state.currentUser,
+            onNewUserName: (userName) => this.handleNewUserName(userName),
+          }}
+        >
+          <NavBarFrom />
+          <div>
+            <Switch>
+              <Route
+                path="/home"
+                render={(props) => (
+                  <MainPage currentUser={this.state.currentUser} {...props} />
+                )}
+              ></Route>{" "}
+              <Route
+                path="/user"
+                render={(props) => (
+                  <UserNameForm
+                    currentUser={this.state.currentUser}
+                    onNewUserName={(userName) =>
+                      this.handleNewUserName(userName)
+                    }
+                    {...props}
+                  />
+                )}
+              ></Route>{" "}
+              <Route path="/not-found" component={NotFound}>
+                {" "}
+              </Route>{" "}
+              <Redirect from="/" exact to="/home">
+                {" "}
+              </Redirect>{" "}
+            </Switch>{" "}
+          </div>{" "}
+        </UserContext.Provider>{" "}
       </React.Fragment>
     );
   }

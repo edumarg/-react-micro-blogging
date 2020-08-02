@@ -1,32 +1,25 @@
 import React, { Component } from "react";
+import UserContext from "../context/userContext";
 class UserNameForm extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
-    this.state = { userName: this.props.currentUser };
+    this.state = {};
   }
 
   handleOnSubmit(event) {
     event.preventDefault();
-    this.props.onNewUserName(this.state.userName);
-    event.target.reset();
-    this.setState({ userName: "" });
+    this.context.currentUser = event.target.value;
     this.props.history.replace("/home");
   }
 
   handleOnchange(event) {
     let newUserName = event.target.value;
-    this.setState({ userName: newUserName });
-  }
-
-  handleKeyUp(event) {
-    if (event.key === "Escape") {
-      event.value = this.props.currentUser;
-      this.setState({ userName: this.props.currentUser });
-    }
+    this.context.onNewUserName(newUserName);
   }
 
   validate() {
-    const newUserName = this.state.userName;
+    const newUserName = this.context.currentUser;
     if (newUserName.trim() === "") return `User Name cannot be empty..`;
     else return null;
   }
@@ -44,8 +37,7 @@ class UserNameForm extends Component {
                 className="form-control user-form-input"
                 id="inputUserName"
                 onChange={(event) => this.handleOnchange(event)}
-                onKeyUp={(event) => this.handleKeyUp(event)}
-                value={this.state.userName}
+                value={this.context.currentUser}
               />
             </div>
             <div className="d-flex align-content-center align-items-center">
