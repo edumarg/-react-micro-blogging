@@ -22,15 +22,16 @@ class MainPage extends Component {
   }
 
   async handleNewTwitt(twitt) {
+    console.log("twitt", twitt);
     let NewHideSpinner = this.state.hideSpinner;
     NewHideSpinner = true;
     this.setState({ hideSpinner: NewHideSpinner });
     try {
       let newPostedTwitts = [...this.state.postedTwitts];
       const response = await axios.post(`${config.URL}`, twitt);
-
       newPostedTwitts = [response.data, ...newPostedTwitts];
       NewHideSpinner = false;
+      this.setState({ postedTwitts: newPostedTwitts });
     } catch (exeption) {
       NewHideSpinner = false;
       if (exeption.response && exeption.response.status === 404) {
