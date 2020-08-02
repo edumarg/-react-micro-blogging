@@ -9,13 +9,35 @@
     <meta name="description" content="Web site created using create-react-app" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon-32x32.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
 
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
     <title>Eduardo Posts Service</title>
 </head>
 
 <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDp7KwvUBVF5Kkw7ZHrEQRD560W8o0Rja4",
+            authDomain: "react-micro-bloggin.firebaseapp.com",
+            databaseURL: "https://react-micro-bloggin.firebaseio.com",
+            projectId: "react-micro-bloggin",
+            storageBucket: "react-micro-bloggin.appspot.com",
+            messagingSenderId: "348678925481",
+            appId: "1:348678925481:web:70c137b87e22a4a5dc4db8",
+            measurementId: "G-KK7P6VQ0TR",
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
 </body>
 
 </html>
