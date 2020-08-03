@@ -10,6 +10,7 @@ import "./myStile.css";
 import UserContext from "./context/userContext";
 import * as firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDp7KwvUBVF5Kkw7ZHrEQRD560W8o0Rja4",

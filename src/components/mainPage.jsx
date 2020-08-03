@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import NewTwitt from "./newTwittForm";
 import TwittsList from "./twittsList";
-import axios from "axios";
+// import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import config from "../config.json";
+// import config from "../config.json";
 import TwittContext from "../context/twittContext";
+import firebase from "firebase";
 
 class MainPage extends Component {
   constructor(props) {
@@ -17,14 +18,21 @@ class MainPage extends Component {
   }
 
   async componentDidMount() {
-    const data = await axios.get(`${config.URL}`);
-    const postedTwittsFromServer = await data.data.tweets;
+    console.log("did mount");
+    const db = firebase.firestore();
+    const snapshot = await db.collection("posts").get();
+
+    const postedTwittsFromServer = snapshot.docs.map((post) => {
+      return {
+        id: post.id,
+        userName: post.data().userName,
+        date: post.data().date,
+        content: post.data().content,
+      };
+    });
+    console.log(postedTwittsFromServer);
+
     this.setState({ postedTwitts: postedTwittsFromServer });
-    this.getTwitts = setInterval(async () => {
-      const data = await axios.get(`${config.URL}`);
-      const postedTwittsFromServer = await data.data.tweets;
-      this.setState({ postedTwitts: postedTwittsFromServer });
-    }, 30000);
   }
 
   componentWillUnmount() {
@@ -36,11 +44,9 @@ class MainPage extends Component {
     NewHideSpinner = true;
     this.setState({ hideSpinner: NewHideSpinner });
     try {
-      let newPostedTwitts = [...this.state.postedTwitts];
-      const response = await axios.post(`${config.URL}`, twitt);
-      newPostedTwitts = [response.data, ...newPostedTwitts];
+      const db = firebase.firestore();
+      await db.collection("posts").add(twitt);
       NewHideSpinner = false;
-      this.setState({ postedTwitts: newPostedTwitts });
     } catch (exeption) {
       if (exeption.response && exeption.response.status === 404) {
         NewHideSpinner = false;
@@ -52,6 +58,28 @@ class MainPage extends Component {
     }
     this.setState({ hideSpinner: NewHideSpinner });
   }
+
+  // async handleNewTwitt(twitt) {
+  //   let NewHideSpinner = this.state.hideSpinner;
+  //   NewHideSpinner = true;
+  //   this.setState({ hideSpinner: NewHideSpinner });
+  //   try {
+  //     let newPostedTwitts = [...this.state.postedTwitts];
+  //     const response = await axios.post(`${config.URL}`, twitt);
+  //     newPostedTwitts = [response.data, ...newPostedTwitts];
+  //     NewHideSpinner = false;
+  //     this.setState({ postedTwitts: newPostedTwitts });
+  //   } catch (exeption) {
+  //     if (exeption.response && exeption.response.status === 404) {
+  //       NewHideSpinner = false;
+  //       toast.error("Information not found!!");
+  //     } else {
+  //       NewHideSpinner = false;
+  //       toast.error("Unexpected error, please try again!");
+  //     }
+  //   }
+  //   this.setState({ hideSpinner: NewHideSpinner });
+  // }
 
   render() {
     const { postedTwitts } = this.state;

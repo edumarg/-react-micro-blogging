@@ -1,15 +1,14 @@
 import React, { Component } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import TwittContext from "../context/twittContext";
-import firebase from "firebase";
-import "firebase/firestore";
+// import firebase from "firebase";
+// import "firebase/firestore";
 
 class NewTwitt extends Component {
   static contextType = TwittContext;
   constructor(props) {
     super(props);
     this.state = {
-      id: "",
       userName: "",
       date: "",
       content: "",
@@ -20,30 +19,33 @@ class NewTwitt extends Component {
     this.setState({ userName: this.context.currentUser });
   }
 
-  async handleOnSubmit(event) {
-    event.preventDefault();
-    const db = firebase.firestore();
-    const response = await db.collection("posts").add({
-      userName: this.state.userName,
-      date: this.state.date,
-      content: this.state.content,
-    });
-    console.log("response firebase", response);
-  }
-
-  // handleOnSubmit(event) {
+  // async handleOnSubmit(event) {
   //   event.preventDefault();
-  //   this.context.onNewTwitt(this.state);
-  //   event.target.reset();
-  //   this.setState({ content: "" });
+  //   try {
+  //     const db = firebase.firestore();
+  //     const response = await db.collection("posts").add({
+  //       userName: this.state.userName,
+  //       date: this.state.date,
+  //       content: this.state.content,
+  //     });
+  //     console.log("response firebase", response);
+  //   } catch (error) {
+  //     alert(error);
+  //   }
   // }
+
+  handleOnSubmit(event) {
+    event.preventDefault();
+    this.context.onNewTwitt(this.state);
+    event.target.reset();
+    this.setState({ content: "" });
+  }
 
   handleOnchange(event) {
     let newContent = event.target.value;
     const now = new Date();
     const date = now.toISOString();
-    const id = Date.now() - new Date("1981-05-20");
-    this.setState({ content: newContent, date, id });
+    this.setState({ content: newContent, date });
   }
 
   handleKeyUp(event) {
