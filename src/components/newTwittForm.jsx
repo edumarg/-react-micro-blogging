@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import TwittContext from "../context/twittContext";
+import firebase from "firebase";
+import "firebase/firestore";
 
 class NewTwitt extends Component {
   static contextType = TwittContext;
@@ -18,12 +20,23 @@ class NewTwitt extends Component {
     this.setState({ userName: this.context.currentUser });
   }
 
-  handleOnSubmit(event) {
+  async handleOnSubmit(event) {
     event.preventDefault();
-    this.context.onNewTwitt(this.state); // enviar por context solo eso
-    event.target.reset();
-    this.setState({ content: "" });
+    const db = firebase.firestore();
+    const response = await db.collection("posts").add({
+      userName: this.state.userName,
+      date: this.state.date,
+      content: this.state.content,
+    });
+    console.log("response firebase", response);
   }
+
+  // handleOnSubmit(event) {
+  //   event.preventDefault();
+  //   this.context.onNewTwitt(this.state);
+  //   event.target.reset();
+  //   this.setState({ content: "" });
+  // }
 
   handleOnchange(event) {
     let newContent = event.target.value;
