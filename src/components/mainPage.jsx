@@ -17,26 +17,29 @@ class MainPage extends Component {
     };
   }
 
+  unsubscribe = null;
+
   async componentDidMount() {
-    console.log("did mount");
     const db = firebase.firestore();
-    const snapshot = await db.collection("posts").get();
 
-    const postedTwittsFromServer = snapshot.docs.map((post) => {
-      return {
-        id: post.id,
-        userName: post.data().userName,
-        date: post.data().date,
-        content: post.data().content,
-      };
-    });
-    console.log(postedTwittsFromServer);
-
-    this.setState({ postedTwitts: postedTwittsFromServer });
+    this.unsubscribe = db
+      .collection("posts")
+      .orderBy("date", "desc")
+      .onSnapshot((snapshot) => {
+        const postedTwittsFromServer = snapshot.docs.map((post) => {
+          return {
+            id: post.id,
+            userName: post.data().userName,
+            date: post.data().date,
+            content: post.data().content,
+          };
+        });
+        this.setState({ postedTwitts: postedTwittsFromServer });
+      });
   }
 
   componentWillUnmount() {
-    clearInterval(this.getTwitts);
+    this.unsubscribe();
   }
 
   async handleNewTwitt(twitt) {

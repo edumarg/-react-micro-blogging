@@ -4,10 +4,10 @@ import TwittContext from "../context/twittContext";
 
 const TwittsList = (props) => {
   const twittContext = useContext(TwittContext);
-  const sortedData = twittContext.list.sort((a, b) => a.date - b.date);
+
   return (
     <React.Fragment>
-      {sortedData.map((twitt) => (
+      {twittContext.list.map((twitt) => (
         <PostedTwitt key={twitt.id} twitt={twitt} />
       ))}
     </React.Fragment>
