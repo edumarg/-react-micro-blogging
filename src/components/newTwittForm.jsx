@@ -19,21 +19,6 @@ class NewTwitt extends Component {
     this.setState({ userName: this.context.currentUser });
   }
 
-  // async handleOnSubmit(event) {
-  //   event.preventDefault();
-  //   try {
-  //     const db = firebase.firestore();
-  //     const response = await db.collection("posts").add({
-  //       userName: this.state.userName,
-  //       date: this.state.date,
-  //       content: this.state.content,
-  //     });
-  //     console.log("response firebase", response);
-  //   } catch (error) {
-  //     alert(error);
-  //   }
-  // }
-
   handleOnSubmit(event) {
     event.preventDefault();
     this.context.onNewTwitt(this.state);
