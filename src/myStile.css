@@ -1,0 +1,39 @@
+body {
+    background-color: #15202b;
+    color: #cccccc;
+}
+
+.user-form {
+    border: #cccccc solid 2px;
+}
+
+.user-text-area,
+.user-text-area:focus {
+    resize: none;
+    background-color: #15202b;
+    color: #cccccc;
+    border: none;
+}
+
+.user-text-area:focus {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.user-form-input,
+.user-form-input:focus {
+    resize: none;
+    background-color: #15202b;
+    color: #cccccc;
+    border: solid 2px #cccccc;
+}
+
+.my-card {
+    background-color: #343a40;
+    color: #ffffff;
+    border: #343a40, solid, 2px;
+}
+
+.my-card h5 {
+    color: #6c757d;
+}
