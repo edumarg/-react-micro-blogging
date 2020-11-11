@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import NewTwitt from "./newTwittForm";
 import TwittsList from "./twittsList";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import config from "../config.json";
 import TwittContext from "../context/twittContext";
+import firebase from "firebase";
 
 class MainPage extends Component {
   constructor(props) {
@@ -16,19 +15,30 @@ class MainPage extends Component {
     };
   }
 
+  unsubscribe = null;
+
   async componentDidMount() {
-    const data = await axios.get(`${config.URL}`);
-    const postedTwittsFromServer = await data.data.tweets;
-    this.setState({ postedTwitts: postedTwittsFromServer });
-    this.getTwitts = setInterval(async () => {
-      const data = await axios.get(`${config.URL}`);
-      const postedTwittsFromServer = await data.data.tweets;
-      this.setState({ postedTwitts: postedTwittsFromServer });
-    }, 30000);
+    const db = firebase.firestore();
+
+    this.unsubscribe = db
+      .collection("posts")
+      .orderBy("date", "desc")
+      .limit(10)
+      .onSnapshot((snapshot) => {
+        const postedTwittsFromServer = snapshot.docs.map((post) => {
+          return {
+            id: post.id,
+            userName: post.data().userName,
+            date: post.data().date,
+            content: post.data().content,
+          };
+        });
+        this.setState({ postedTwitts: postedTwittsFromServer });
+      });
   }
 
   componentWillUnmount() {
-    clearInterval(this.getTwitts);
+    this.unsubscribe();
   }
 
   async handleNewTwitt(twitt) {
@@ -36,11 +46,9 @@ class MainPage extends Component {
     NewHideSpinner = true;
     this.setState({ hideSpinner: NewHideSpinner });
     try {
-      let newPostedTwitts = [...this.state.postedTwitts];
-      const response = await axios.post(`${config.URL}`, twitt);
-      newPostedTwitts = [response.data, ...newPostedTwitts];
+      const db = firebase.firestore();
+      await db.collection("posts").add(twitt);
       NewHideSpinner = false;
-      this.setState({ postedTwitts: newPostedTwitts });
     } catch (exeption) {
       if (exeption.response && exeption.response.status === 404) {
         NewHideSpinner = false;

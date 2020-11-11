@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import TwittContext from "../context/twittContext";
+// import firebase from "firebase";
+// import "firebase/firestore";
 
 class NewTwitt extends Component {
   static contextType = TwittContext;
   constructor(props) {
     super(props);
     this.state = {
-      id: "",
       userName: "",
       date: "",
       content: "",
@@ -20,7 +21,7 @@ class NewTwitt extends Component {
 
   handleOnSubmit(event) {
     event.preventDefault();
-    this.context.onNewTwitt(this.state); // enviar por context solo eso
+    this.context.onNewTwitt(this.state);
     event.target.reset();
     this.setState({ content: "" });
   }
@@ -29,8 +30,7 @@ class NewTwitt extends Component {
     let newContent = event.target.value;
     const now = new Date();
     const date = now.toISOString();
-    const id = Date.now() - new Date("1981-05-20");
-    this.setState({ content: newContent, date, id });
+    this.setState({ content: newContent, date });
   }
 
   handleKeyUp(event) {
